@@ -1,0 +1,4 @@
+#cart {
+  overflow-y: auto;
+  max-height: 450px;
+}

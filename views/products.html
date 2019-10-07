@@ -1,0 +1,28 @@
+{% extends './layouts/base.html' %}
+
+{% block content %}
+  <h1 class="display-4 text-center">Produtos</h1>
+  <hr />
+  <ul class="products">
+    {% for item in products %}
+    <li>
+      <p>{{ item.name }}</p>
+      <p>{{ item.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' }) }}</p>
+      <a href="/product/{{ item.id }}" class="btn btn-outline-dark btn-block btn-sm">Ver mais</a>
+    </li>
+    {% endfor %}
+  </ul>
+  <div class="clearfix"></div>
+{% endblock %}
+
+{% block title %}
+  Produtos
+{% endblock %}
+
+{% block script %}
+  <script src="/js/products.js" charset="utf-8"></script>
+{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="/styles/products.css">
+{% endblock %}

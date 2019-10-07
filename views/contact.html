@@ -1,0 +1,29 @@
+{% extends './layouts/base.html' %}
+
+{% block content %}
+<h1 class="display-4 text-center">Contato</h1>
+<hr />
+  <form>
+    <div class="row">
+      <div class="col-12">
+        Nome:
+        <input class="form-control" name="name" id='name' />
+      </div>
+      <div class="col-12 mt-4">
+        Mensagem:
+        <textarea id='message' class="form-control" name="message"></textarea>
+      </div>
+      <div class="col-12 mt-4">
+        <button type="submit" name="button" class="btn btn-primary">Enviar</button>
+      </div>
+    </div>
+  </form>
+{% endblock %}
+
+{% block title %}
+  Contato
+{% endblock %}
+
+{% block script %}
+  <script src="/js/contact.js" charset="utf-8"></script>
+{% endblock %}
