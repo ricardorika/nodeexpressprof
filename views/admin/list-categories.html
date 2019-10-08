@@ -2,19 +2,17 @@
   <thead>
       <tr>
         <th>Id</th>
-        <th>Categoria</th>
         <th>Nome</th>
-        <th>Preço</th>
+        <th>Slug</th>
         <th>Opções</th>
       </tr>
   </thead>
 <tbody>
-  {% for item in products %}
+  {% for item in categories %}
   <tr>
     <td>{{ item._id }}</td>
-    <td><p>{{ item.categoryObject[0].name }}</p></td>
     <td><p>{{ item.name }}</p></td>
-    <td><p>{{ item.price.toLocaleString('pt-BR', { minimumFractionDigits: 2 , style: 'currency', currency: 'BRL' }) }}</p></td>
+    <td><p>{{ item.slug }}</p></td>
     <td><button class="btn btn-sm btn-outline-danger btn-remove" id="{{ item._id }}">Excluir</button></td>
   </tr>
   {% endfor %}

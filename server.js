@@ -6,6 +6,7 @@ const nodemailer = require('nodemailer');
 const mongoose = require("mongoose");
 const ProductsSchema = require('./schemas/Products');
 const ClientsSchema = require('./schemas/Clients');
+const CategoriesSchema = require('./schemas/Categories');
 const md5 = require('md5');
 
 const MONGODB_URL = 'mongodb://@localhost:27017/store';
@@ -19,6 +20,7 @@ require('useful-nunjucks-filters')(env);
 
 const Products = mongoose.model('Product', ProductsSchema);
 const Clients = mongoose.model('Clients', ClientsSchema);
+const Categories = mongoose.model('Categories', CategoriesSchema);
 
 mongoose.connect(MONGODB_URL, {useNewUrlParser: true}, err => {
     if (err) {
@@ -46,8 +48,15 @@ app.get('/', (req, res) => {
 });
 
 app.get('/products', (req, res) => {
-  Products.find((err, obj) => {
-      res.render('products.html', {products: obj});
+  Categories.aggregate([{
+    $lookup: {
+        from: "products", // collection name in db
+        localField: "_id",
+        foreignField: "category",
+        as: "products"
+    }
+  }]).sort('name').exec((err, obj) => {
+      res.render('products.html', {categories: obj});
   });
 });
 
@@ -60,24 +69,41 @@ app.delete('/admin/product/:id', (req, res) => {
     res.send('ok');
   });
 });
+app.delete('/admin/category/:id', (req, res) => {
+  Categories.findOneAndRemove({_id: req.params.id}, (err, obj) => {
+    if(err) {
+      res.send('error');
+    }
+    res.send('ok');
+  });
+});
 
 app.get('/admin/list-products', (req, res) => {
-  Products.find((err, obj) => {
-    obj = obj.sort((a,b) => {
-      if (a.name > b.name) {
-       return 1;
-      }
-      if (b.name > a.name) {
-           return -1;
-      }
-      return 0;
-    });
+  Products.aggregate([{
+    $lookup: {
+        from: "categories", // collection name in db
+        localField: "category",
+        foreignField: "_id",
+        as: "categoryObject"
+    }
+}]).sort('name').exec((err, obj) => {
       res.render('admin/list-products.html', {products: obj});
   });
 });
-app.get('/admin/products', (req, res) => {
-  res.render('admin/products.html');
+app.get('/admin/list-categories', (req, res) => {
+  Categories.find().sort('name').exec((err, obj) => {
+      res.render('admin/list-categories.html', {categories: obj});
+  });
 });
+app.get('/admin/products', (req, res) => {
+  Categories.find().sort('name').exec((err, obj) => {
+      res.render('admin/products.html', {categories: obj});
+  });
+});
+app.get('/admin/categories', (req, res) => {
+  res.render('admin/categories.html');
+});
+
 
 app.get('/contact', (req, res) => {
   res.render('contact.html');
@@ -134,6 +160,14 @@ app.post('/admin/products', (req, res) => {
   var newProduct = new Products(req.body);
   newProduct.save((err, newProduct) => {
     console.info(newProduct.name + ' salvo');
+    res.send('ok');
+  })
+});
+
+app.post('/admin/categories', (req, res) => {
+  var newCategory = new Categories(req.body);
+  newCategory.save((err, newCategory) => {
+    console.info(newCategory.name + ' salvo');
     res.send('ok');
   })
 });

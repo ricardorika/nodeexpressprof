@@ -4,6 +4,16 @@
 <h1 class="display-4 text-center">Gerenciamento de Produtos</h1>
 <hr />
   <form>
+    <div class="row mb-5">
+        <div class="col-12">
+          Categoria:
+          <select class="form-control" id="category" name="category">
+              {% for item in categories %}
+                <option value="{{ item._id }}">{{ item.name }}</option>
+              {% endfor%}
+            </select>
+        </div>
+    </div>
     <div class="row">
       <div class="col-6">
         Nome:

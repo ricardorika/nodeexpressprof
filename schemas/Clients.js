@@ -1,5 +1,5 @@
 const {Schema} = require('mongoose');
-module.exports = new Schema({
+module.exports = new Schema({    
     name: String,
     lastname: String,
     email: String,
@@ -8,5 +8,5 @@ module.exports = new Schema({
     zipcode: String,
     neighborhood: String,
     city: String,
-    state: String    
+    state: String
 });

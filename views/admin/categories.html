@@ -1,0 +1,35 @@
+{% extends '../layouts/base.html' %}
+
+{% block content %}
+<h1 class="display-4 text-center">Gerenciamento de Categorias</h1>
+<hr />
+  <form>
+    <div class="row">
+      <div class="col-6">
+        Nome:
+        <input class="form-control" name="name" id='name' />
+      </div>
+      <div class="col-6">
+        Slug:
+        <input class="form-control" readonly name="slug" id='slug' />
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12">
+        <button type="submit" name="button" class="btn btn-primary">Cadastrar</button>
+      </div>
+    </div>
+  </form>
+  <div class="mt-5">
+    <h2> Lista de categorias </h2>
+    <div id="list-categories"></div>
+  </div>
+{% endblock %}
+
+{% block title %}
+ Admin | Produtos
+{% endblock %}
+
+{% block script %}
+  <script src="/js/admin/categories.js" charset="utf-8"></script>
+{% endblock %}
